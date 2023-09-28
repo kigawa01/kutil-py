@@ -1,8 +1,8 @@
 from enum import Enum
 from typing import Final
 
-from util.enum.god import God, Gods
-from util.enum.star import Star, Stars
+from kutil.kutil.enum.god import God, Gods
+from kutil.kutil.enum.star import Star, Stars
 
 
 ####################################################################################################

@@ -1,6 +1,6 @@
 from typing import Final, TypeVar, Generic, Self
 
-from util.func.func import LambdaBase
+from kutil.kutil.func.func import LambdaBase
 
 ElementType = TypeVar("ElementType")
 

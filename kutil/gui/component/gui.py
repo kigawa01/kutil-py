@@ -1,12 +1,14 @@
+from abc import ABC
 from tkinter import Tk
 
-from util.gui.base.tk import TKElement
-from util.gui.component.component import Component
+from kutil.kutil.gui.base.tk import TKElement
+from kutil.kutil.gui.component.component import Component
 
 
 class GUI(
     Component,
     TKElement,
+    ABC,
 ):
     """GUIを扱うクラス。
     """

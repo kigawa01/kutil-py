@@ -1,6 +1,6 @@
 from typing import Final, TextIO, TypeVar
 
-from util.file.mode import WriteMode
+from kutil.kutil.file.mode import WriteMode
 
 ResultType = TypeVar("ResultType")
 

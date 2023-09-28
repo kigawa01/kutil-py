@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from util.err.errors import SingletonProviderError
+from kutil.kutil.err.errors import SingletonProviderError
 
 SingletonType = TypeVar("SingletonType")
 

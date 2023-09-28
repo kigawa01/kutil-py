@@ -1,7 +1,7 @@
 from typing import Final, Callable
 
-from util.parent.game import Game
-from util.string.matcher import Matcher
+from kutil.kutil.parent.game import Game
+from kutil.kutil.string.matcher import Matcher
 
 
 ####################################################################################################

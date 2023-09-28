@@ -1,8 +1,8 @@
 import tkinter
 
-from util.gui.base.misc import MiscElement
-from util.gui.component.component import Component
-from util.gui.element.canvas import CanvasElement
+from kutil.kutil.gui.base.misc import MiscElement
+from kutil.kutil.gui.component.component import Component
+from kutil.kutil.gui.element.canvas import CanvasElement
 
 
 class CanvasComponent(

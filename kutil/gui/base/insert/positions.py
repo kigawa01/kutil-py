@@ -1,5 +1,5 @@
-from util.gui.base.insert.end import EndPosition
-from util.gui.base.insert.position import IndexPosition
+from kutil.kutil.gui.base.insert.end import EndPosition
+from kutil.kutil.gui.base.insert.position import IndexPosition
 
 
 class Positions:

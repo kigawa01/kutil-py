@@ -1,7 +1,7 @@
 import tkinter
 
-from util.gui.base.misc import MiscElement, MiscType
-from util.gui.element.entry import EntryElement
+from kutil.kutil.gui.base.misc import MiscElement, MiscType
+from kutil.kutil.gui.element.entry import EntryElement
 
 
 class EntryCreator(MiscElement[MiscType]):

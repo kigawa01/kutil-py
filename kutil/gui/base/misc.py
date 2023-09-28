@@ -1,7 +1,7 @@
 import tkinter
 from typing import TypeVar
 
-from util.gui.base.element import GUIElement
+from kutil.kutil.gui.base.element import GUIElement
 
 MiscType = TypeVar("MiscType", bound=tkinter.Misc)
 

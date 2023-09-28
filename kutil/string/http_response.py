@@ -2,8 +2,8 @@ from http import client
 from http.client import HTTPResponse
 from typing import Final
 
-from util.jsons.jsons import Json
-from util.urls.http_request import HttpRequest
+from kutil.kutil.jsons.jsons import Json
+from kutil.kutil.urls.http_request import HttpRequest
 
 
 ####################################################################################################

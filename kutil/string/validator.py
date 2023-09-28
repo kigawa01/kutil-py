@@ -1,8 +1,8 @@
 import datetime
 from typing import TypeVar, Final, final, Any
 
-from util.list.immutable_list import ImmutableList
-from util.string.validator_core import ValidatorInterface, ValidatorInputType, ValidatorParentReturnType, \
+from kutil.kutil.list.immutable_list import ImmutableList
+from kutil.kutil.string.validator_core import ValidatorInterface, ValidatorInputType, ValidatorParentReturnType, \
     ValidatorReturnType, ValidateError, ChoiceValidatorReturnType
 
 

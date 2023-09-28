@@ -1,7 +1,7 @@
 from tkinter import Widget
 
-from util.gui.base.widget import WidgetElement
-from util.util import Util
+from kutil.kutil.gui.base.widget import WidgetElement
+from kutil.kutil.util import Util
 
 
 class GridBuilder:

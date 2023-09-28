@@ -1,7 +1,7 @@
 from tkinter import Text
 
-from util.gui.base.misc import MiscElement, MiscType
-from util.gui.element.text import TextElement
+from kutil.kutil.gui.base.misc import MiscElement, MiscType
+from kutil.kutil.gui.element.text import TextElement
 
 
 class TextCreator(MiscElement[MiscType]):

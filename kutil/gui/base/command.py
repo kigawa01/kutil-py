@@ -2,7 +2,7 @@ import inspect
 from tkinter import *
 from typing import TypeVar, Self, Callable, TypedDict
 
-from util.gui.base.misc import MiscElement
+from kutil.kutil.gui.base.misc import MiscElement
 
 CommandType = TypeVar("CommandType", bound=Button)
 CommandArgType = TypeVar("CommandArgType", bound=TypedDict)

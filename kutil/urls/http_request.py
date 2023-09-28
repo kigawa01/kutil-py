@@ -1,6 +1,6 @@
 from urllib import request
 
-from util.urls.url import URL
+from kutil.kutil.urls.url import URL
 
 
 ####################################################################################################

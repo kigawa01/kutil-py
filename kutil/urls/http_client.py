@@ -1,7 +1,7 @@
 from urllib import request
 
-from util.string.http_response import HttpResponse
-from util.urls.http_request import HttpRequest
+from kutil.kutil.string.http_response import HttpResponse
+from kutil.kutil.urls.http_request import HttpRequest
 
 
 ####################################################################################################

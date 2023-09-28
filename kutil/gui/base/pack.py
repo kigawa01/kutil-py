@@ -1,7 +1,7 @@
 import tkinter
 from typing import TypeVar, Self
 
-from util.gui.base.element import GUIElement
+from kutil.kutil.gui.base.element import GUIElement
 
 PackType = TypeVar("PackType", bound=tkinter.Pack)
 

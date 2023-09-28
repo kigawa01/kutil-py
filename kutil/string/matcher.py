@@ -1,7 +1,7 @@
 from typing import Final
 
-from util.string.reader import Reader
-from util.string.str_util import StrUtil
+from kutil.kutil.string.reader import Reader
+from kutil.kutil.string.str_util import StrUtil
 
 
 ####################################################################################################

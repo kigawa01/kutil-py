@@ -1,9 +1,9 @@
 import tkinter
 from typing import TypeVar, Self
 
-from util.gui.base.insert.base import Position
-from util.gui.base.insert.positions import Positions
-from util.gui.base.misc import MiscElement
+from kutil.kutil.gui.base.insert.base import Position
+from kutil.kutil.gui.base.insert.positions import Positions
+from kutil.kutil.gui.base.misc import MiscElement
 
 InsertType = TypeVar("InsertType", bound=tkinter.Text)
 

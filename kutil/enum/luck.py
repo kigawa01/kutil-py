@@ -3,7 +3,7 @@ import random
 import typing
 from typing import Final
 
-from util.list.immutable_list import ImmutableList
+from kutil.kutil.list.immutable_list import ImmutableList
 
 
 class Luck:

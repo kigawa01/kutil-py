@@ -1,7 +1,7 @@
 from tkinter import *
 from typing import TypeVar, Self
 
-from util.gui.base.misc import MiscElement
+from kutil.kutil.gui.base.misc import MiscElement
 
 WidthType = TypeVar("WidthType", bound=Text | Button | Label | Tk | Entry)
 

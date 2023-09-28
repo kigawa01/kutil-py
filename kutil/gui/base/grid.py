@@ -1,7 +1,7 @@
 from tkinter import *
 from typing import TypeVar
 
-from util.gui.base.element import GUIElement
+from kutil.kutil.gui.base.element import GUIElement
 
 GridType = TypeVar("GridType", bound=Grid)
 

@@ -1,8 +1,8 @@
 import tkinter
 
 from project.gui.config.fontconfig import FontConfig
-from util.gui.base.misc import MiscType, MiscElement
-from util.gui.element.label import LabelElement
+from kutil.kutil.gui.base.misc import MiscType, MiscElement
+from kutil.kutil.gui.element.label import LabelElement
 
 
 class LabelCreator(MiscElement[MiscType]):

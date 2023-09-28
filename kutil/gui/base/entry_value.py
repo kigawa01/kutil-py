@@ -1,7 +1,7 @@
 from tkinter import *
 from typing import TypeVar
 
-from util.gui.base.misc import MiscElement
+from kutil.kutil.gui.base.misc import MiscElement
 
 EntryValueType = TypeVar("EntryValueType", bound=Entry)
 

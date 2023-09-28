@@ -1,6 +1,6 @@
 import tkinter
 
-from util.gui.base.insert.base import Position
+from kutil.kutil.gui.base.insert.base import Position
 
 
 class EndPosition(Position):

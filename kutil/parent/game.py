@@ -1,6 +1,6 @@
 from typing import Final
 
-from util.string.formatter import Formatter
+from kutil.kutil.string.formatter import Formatter
 
 
 ####################################################################################################

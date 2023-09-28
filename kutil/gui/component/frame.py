@@ -1,8 +1,8 @@
 import tkinter
 
-from util.gui.base.misc import MiscElement
-from util.gui.component.component import Component
-from util.gui.element.frame import FrameElement
+from kutil.kutil.gui.base.misc import MiscElement
+from kutil.kutil.gui.component.component import Component
+from kutil.kutil.gui.element.frame import FrameElement
 
 
 class Frame(

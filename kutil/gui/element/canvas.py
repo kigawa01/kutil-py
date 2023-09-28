@@ -1,10 +1,10 @@
 import tkinter
 from os import PathLike
 
-from util.gui.base.height import HeightElement
-from util.gui.base.widget import WidgetElement
-from util.gui.base.width import WidthElement
-from util.gui.element.image import ImageElement
+from kutil.kutil.gui.base.height import HeightElement
+from kutil.kutil.gui.base.widget import WidgetElement
+from kutil.kutil.gui.base.width import WidthElement
+from kutil.kutil.gui.element.image import ImageElement
 
 
 class CanvasElement(
@@ -23,5 +23,5 @@ class CanvasElement(
         """
         image = tkinter.PhotoImage()
         element = ImageElement(image).file(file)
-        self.element.create_image((0, 0), image=image)
+        self.element.create_image((0, 0), image=image, anchor=tkinter.NW)
         return element

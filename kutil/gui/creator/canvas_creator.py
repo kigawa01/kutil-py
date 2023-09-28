@@ -1,7 +1,7 @@
 import tkinter
 
-from util.gui.base.misc import MiscElement, MiscType
-from util.gui.element.canvas import CanvasElement
+from kutil.kutil.gui.base.misc import MiscElement, MiscType
+from kutil.kutil.gui.element.canvas import CanvasElement
 
 
 class CanvasCreator(MiscElement[MiscType]):

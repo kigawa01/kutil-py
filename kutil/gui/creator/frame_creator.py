@@ -1,7 +1,7 @@
 import tkinter
 
-from util.gui.base.misc import MiscElement, MiscType
-from util.gui.element.frame import FrameElement
+from kutil.kutil.gui.base.misc import MiscElement, MiscType
+from kutil.kutil.gui.element.frame import FrameElement
 
 
 class FrameCreator(MiscElement[MiscType]):

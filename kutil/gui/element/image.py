@@ -2,7 +2,7 @@ import tkinter
 from os import PathLike
 from typing import Self
 
-from util.gui.base.element import GUIElement
+from kutil.kutil.gui.base.element import GUIElement
 
 
 class ImageElement(

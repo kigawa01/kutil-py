@@ -1,7 +1,7 @@
 import random
 from typing import TypeVar, Final, Generic, Callable, Any
 
-from util.util import KEnumType, Util
+from kutil.kutil.util import KEnumType, Util
 
 # リストが保持する要素の方
 KListType = TypeVar("KListType")

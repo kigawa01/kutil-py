@@ -1,7 +1,7 @@
 from tkinter import *
 from typing import TypeVar, Self
 
-from util.gui.base.element import GUIElement
+from kutil.kutil.gui.base.element import GUIElement
 
 WmType = TypeVar("WmType", bound=Wm)
 

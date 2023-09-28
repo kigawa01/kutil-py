@@ -1,7 +1,7 @@
 import tkinter
 
-from util.gui.base.misc import MiscElement, MiscType
-from util.gui.element.button import ButtonElement
+from kutil.kutil.gui.base.misc import MiscElement, MiscType
+from kutil.kutil.gui.element.button import ButtonElement
 
 
 class ButtonCreator(MiscElement[MiscType]):

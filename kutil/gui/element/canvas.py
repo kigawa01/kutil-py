@@ -1,5 +1,6 @@
 import tkinter
 from os import PathLike
+from typing import Self
 
 from kutil.kutil.gui.base.height import HeightElement
 from kutil.kutil.gui.base.widget import WidgetElement
@@ -25,3 +26,9 @@ class CanvasElement(
         element = ImageElement(image).file(file)
         self.element.create_image((0, 0), image=image, anchor=tkinter.NW)
         return element
+
+    def background(self, color: str) -> Self:
+        """set background color
+        """
+        self.element.configure(bg=color)
+        return self

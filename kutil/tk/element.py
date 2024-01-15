@@ -1,64 +1,50 @@
 import tkinter
 from abc import ABC
 from tkinter import ttk
-from typing import Self, TypeVar, Generic, Callable
+from typing import override, Optional
 
-ElementType = TypeVar("ElementType")
-
-
-class ElementBase(ABC, Generic[ElementType]):
-    element: ElementType
-
-    def __init__(self, element: ElementType):
-        self.element = element
+from kutilpy.kutil.tk.base import MiscBase, PackBase, TkBase
 
 
-class WindowBase(
-    ElementBase[tkinter.Tk],
-    ABC
+class WindowBase[T: 'WindowBase'](
+    TkBase,
+    ABC,
 ):
+    parent: Optional['WindowBase'] = None
+    _force_focus: bool = False
+
     def __init__(self):
-        super().__init__(tkinter.Tk())
-        self.min_size(200, 50)
-        self.bind("<FocusIn>", self.on_focus)
-        self.protocol("WM_DELETE_WINDOW", self.on_close)
+        super().__init__()
+        self.children = list['WindowBase']()
 
-    def on_focus(self, event):
-        pass
-
-    def on_close(self):
-        self.destroy()
-
-    def on_pre_destroy(self):
-        pass
-
-    def destroy(self):
-        self.on_pre_destroy()
-        self.element.destroy()
-
-    def bind(self, sequence: str, func: Callable[[tkinter.Event], object | None]):
-        self.element.bind(sequence, func)
-
-    def protocol(self, name: str, func: Callable[[], object | None]):
-        self.element.wm_protocol(name, func)
-
-    def lift(self):
-        self.element.tkraise()
-
-    def most_front(self, is_enable: bool) -> Self:
-        self.element.wm_attributes("-topmost", is_enable)
-
-    def focus_force(self):
-        self.element.focus_force()
+    def is_force_focus(self, force: bool):
+        self._force_focus = force
 
     def mainloop(self):
+        self.after(1, self.focus_force)
         self.element.mainloop()
 
-    def min_size(self, width: int, height: int):
-        self.element.wm_minsize(
-            width=width,
-            height=height
-        )
+    @override
+    def _on_focus(self, event):
+        self.focus_force_child()
+        super()._on_focus(event)
+
+    def focus_force_child(self):
+        reversed_list: list['WindowBase'] = [*self.children]
+        reversed_list.reverse()
+        for child in reversed_list:
+            child: 'WindowBase'
+            if not child._force_focus:
+                continue
+            child.focus_force()
+            break
+
+    @override
+    def destroy(self):
+        parent = self.parent
+        if parent is not None:
+            parent.children.remove(self)
+        super().destroy()
 
     def frame(self):
         return Frame(self)
@@ -66,31 +52,22 @@ class WindowBase(
     def button(self, text: str):
         return Button(self, text)
 
-
-PackType = TypeVar("PackType", bound=tkinter.Pack)
-
-
-class PackBase(
-    ElementBase[PackType],
-    ABC,
-):
-    def __init__(self, element: PackType):
-        super().__init__(element)
-
-    def pack(self) -> Self:
-        self.element.pack()
-        return self
+    def child_window(self, child: 'WindowBase'):
+        self.children.append(child)
+        child.parent = self
 
 
 class Frame(
-    PackBase[tkinter.Frame]
+    PackBase[tkinter.Frame],
+    MiscBase[tkinter.Frame],
 ):
     def __init__(self, parent: WindowBase):
         super().__init__(ttk.Frame(parent.element))
 
 
 class Button(
-    PackBase[tkinter.Button]
+    PackBase[tkinter.Button],
+    MiscBase[tkinter.Button],
 ):
     def __init__(self, parent: WindowBase, text: str):
         super().__init__(ttk.Button(parent.element, text=text))

@@ -29,14 +29,11 @@ class WindowBase(
     def on_close(self):
         self.destroy()
 
-    def on_destroy(self):
-        pass
-
-    def on_mainloop(self):
+    def on_pre_destroy(self):
         pass
 
     def destroy(self):
-        self.on_destroy()
+        self.on_pre_destroy()
         self.element.destroy()
 
     def bind(self, sequence: str, func: Callable[[tkinter.Event], object | None]):
@@ -48,27 +45,26 @@ class WindowBase(
     def lift(self):
         self.element.tkraise()
 
-    def most_front(self, is_enable: bool):
+    def most_front(self, is_enable: bool) -> Self:
         self.element.wm_attributes("-topmost", is_enable)
 
     def focus_force(self):
         self.element.focus_force()
 
     def mainloop(self):
-        self.on_mainloop()
         self.element.mainloop()
-
-    def frame(self):
-        return Frame(self)
-
-    def button(self):
-        return Button(self)
 
     def min_size(self, width: int, height: int):
         self.element.wm_minsize(
             width=width,
             height=height
         )
+
+    def frame(self):
+        return Frame(self)
+
+    def button(self, text: str):
+        return Button(self, text)
 
 
 PackType = TypeVar("PackType", bound=tkinter.Pack)
@@ -96,5 +92,5 @@ class Frame(
 class Button(
     PackBase[tkinter.Button]
 ):
-    def __init__(self, parent: WindowBase):
-        super().__init__(ttk.Button(parent.element))
+    def __init__(self, parent: WindowBase, text: str):
+        super().__init__(ttk.Button(parent.element, text=text))

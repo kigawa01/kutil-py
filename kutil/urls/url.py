@@ -1,4 +1,4 @@
-from typing import Final, Self
+from typing import Self
 from urllib import parse
 
 
@@ -7,12 +7,12 @@ from urllib import parse
 
 class URL:
     """urlを扱うためのクラス
-    :var parse_result: urlの情報
+    :var __parse_result: urlの情報
     """
-    parse_result: Final[parse.ParseResult]
+    __parse_result: parse.ParseResult
 
     def __init__(self, parse_result: parse.ParseResult):
-        self.parse_result = parse_result
+        self.__parse_result = parse_result
 
     @staticmethod
     def by_str(url: str):
@@ -26,20 +26,24 @@ class URL:
         """既存のurlにpathを追加します
         :param path: 追加するpath
         """
-        path = parse.urljoin(self.parse_result.path, path)
-        self.parse_result._replace(path=path)
+        path = parse.urljoin(self.__parse_result.path, path)
+        self.__parse_result = self.__parse_result._replace(path=path)
         return self
 
     def join_query(self, query: dict[str, str]) -> Self:
         """join query parm
         """
-        exit_query = parse.parse_qs(self.parse_result.query)
+        exit_query = parse.parse_qs(self.__parse_result.query)
         str_query = parse.urlencode({**exit_query, **query})
-        self.parse_result._replace(query=str_query)
+        self.__parse_result = self.__parse_result._replace(query=str_query)
         return self
 
     def to_str_url(self):
-        return parse.urlunparse(self.parse_result)
+        return parse.urlunparse(self.__parse_result)
 
     def __str__(self):
-        return self.parse_result.__str__()
+        return self.__parse_result.__str__()
+
+    def to_request(self):
+        from kutilpy.kutil.urls.http_request import HttpRequest
+        return HttpRequest.by_url(self)

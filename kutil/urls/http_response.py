@@ -1,9 +1,10 @@
+from dataclasses import Field, fields
 from http import client
 from http.client import HTTPResponse
-from typing import Final
+from typing import Final, get_type_hints
 
-from kutil.kutil.jsons.jsons import Json
-from kutil.kutil.urls.http_request import HttpRequest
+from kutilpy.kutil.jsons.jsons import Json
+from kutilpy.kutil.urls.http_request import HttpRequest
 
 
 ####################################################################################################

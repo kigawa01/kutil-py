@@ -1,7 +1,7 @@
 import tkinter
 from abc import ABC
 from tkinter import ttk
-from typing import override, Optional
+from typing import override, Optional, Callable, Self
 
 from kutilpy.kutil.tk.base import MiscBase, PackBase, TkBase
 
@@ -69,5 +69,15 @@ class Button(
     PackBase[tkinter.Button],
     MiscBase[tkinter.Button],
 ):
+    _on_click: Callable[[], None] | None = None
+
     def __init__(self, parent: WindowBase, text: str):
-        super().__init__(ttk.Button(parent.element, text=text))
+        super().__init__(ttk.Button(
+            parent.element,
+            text=text,
+            command=lambda: self._on_click()
+        ))
+
+    def on_click(self, func: Callable[[], None]) -> Self:
+        self._on_click = func
+        return self

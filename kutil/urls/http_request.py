@@ -1,9 +1,15 @@
+from enum import Enum
+from typing import Self
 from urllib import request
 
-from kutil.kutil.urls.url import URL
+from kutilpy.kutil.urls.url import URL
 
 
 ####################################################################################################
+class ContentType(Enum):
+    JSON = "application/json"
+
+
 # httpリクエストに関するもの
 class HttpRequest:
     """httpリクエストの情報を扱うクラス
@@ -24,3 +30,18 @@ class HttpRequest:
         """現在のリクエストを取得します
         """
         return self._url_request
+
+    def accept(self, content_type: ContentType) -> Self:
+        self._url_request.add_header("Accept", content_type.value)
+        return self
+
+    def set_method(self, method: str) -> Self:
+        self._url_request.method = method
+        return self
+
+    def fetch(self):
+        from kutilpy.kutil.urls.http_client import HttpClient
+        return HttpClient.fetch(self)
+
+    def __str__(self):
+        return f"HttpRequest: '{self._url_request.method} {self._url_request.full_url}'"

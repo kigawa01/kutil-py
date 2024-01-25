@@ -49,11 +49,12 @@ class Json:
         field_dict: dict[str, Field] = {field.name: field for field in fields(clazz)}
         field_type_dict: dict[str, type] = get_type_hints(clazz)
         for src_key, src_value in src.items():
-            assert src_key in field_dict, f"Invalid Data Structure: {src_key} not found "
+            if src_key not in field_type_dict:
+                continue
             field = field_dict[src_key]
             field_type = field_type_dict[field.name]
             if dataclasses.is_dataclass(field_type):
                 result[src_key] = Json.dict_to_dataclass(src_value, field_type)
             else:
                 result[src_key] = src_value
-        return result
+        return clazz(**result)

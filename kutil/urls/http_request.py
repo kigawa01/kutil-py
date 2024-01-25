@@ -40,6 +40,10 @@ class HttpRequest:
         return self
 
     def fetch(self):
+        """
+        :return:
+        :rtype: HttpResponse
+        """
         from kutilpy.kutil.urls.http_client import HttpClient
         return HttpClient.fetch(self)
 

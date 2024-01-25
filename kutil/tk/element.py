@@ -1,5 +1,6 @@
 import tkinter
 from abc import ABC
+from concurrent.futures import ThreadPoolExecutor
 from tkinter import ttk
 from typing import override, Optional, Callable, Self
 
@@ -13,8 +14,8 @@ class WindowBase[T: 'WindowBase'](
     parent: Optional['WindowBase'] = None
     _force_focus: bool = False
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, executor: ThreadPoolExecutor):
+        super().__init__(executor)
         self.children = list['WindowBase']()
 
     def is_force_focus(self, force: bool):
@@ -41,9 +42,13 @@ class WindowBase[T: 'WindowBase'](
 
     @override
     def destroy(self):
+        for child in self.children:
+            child.destroy()
+
         parent = self.parent
         if parent is not None:
-            parent.children.remove(self)
+            if parent.children.count(self) != 0:
+                parent.children.remove(self)
         super().destroy()
 
     def frame(self):
@@ -51,6 +56,9 @@ class WindowBase[T: 'WindowBase'](
 
     def button(self, text: str):
         return Button(self, text)
+
+    def entry(self):
+        return Entry(self)
 
     def child_window(self, child: 'WindowBase'):
         self.children.append(child)
@@ -77,7 +85,27 @@ class Button(
             text=text,
             command=lambda: self._on_click()
         ))
+        self.parent = parent
 
-    def on_click(self, func: Callable[[], None]) -> Self:
+    def on_click(self, func: Callable[[], any]) -> Self:
         self._on_click = func
         return self
+
+    def on_click_execute(self, func: Callable[[any], any], *args) -> Self:
+        self.on_click(lambda: self.parent.execute(func, *args))
+        return self
+
+
+class Entry(
+    PackBase[tkinter.Entry],
+    MiscBase[tkinter.Entry],
+):
+
+    def __init__(self, parent: WindowBase):
+        super().__init__(ttk.Entry(
+            parent.element,
+        ))
+        self.parent = parent
+
+    def value(self):
+        return self.element.get()

@@ -1,8 +1,8 @@
 import datetime
 from typing import TypeVar, Final, final, Any
 
-from kutil.kutil.list.immutable_list import ImmutableList
-from kutil.kutil.string.validator_core import ValidatorInterface, ValidatorInputType, ValidatorParentReturnType, \
+from kutilpy.kutil.list.immutable_list import ImmutableList
+from kutilpy.kutil.string.validator_core import ValidatorInterface, ValidatorInputType, ValidatorParentReturnType, \
     ValidatorReturnType, ValidateError, ChoiceValidatorReturnType
 
 
@@ -317,6 +317,8 @@ class ListValidatorParent(ValidatorParent[ValidatorInputType, ValidatorParentRet
         :param message: バリデーションエラーのメッセージ
         :return: 整数値のバリデーター
         """
+        validator().default("aaa").trim().integer().min(0).max(10)
+
         return DateValidator(self.iterate(validator().integer()), message)
 
 

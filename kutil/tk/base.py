@@ -1,6 +1,10 @@
+import threading
 import tkinter
+import traceback
 from abc import ABC
-from typing import Self, Callable
+from concurrent.futures import ThreadPoolExecutor
+from queue import Queue
+from typing import Self, Callable, override
 
 
 class ElementBase[T](ABC):
@@ -50,13 +54,63 @@ class PackBase[T: tkinter.Pack](
         return self
 
 
-class TkBase(
-    MiscBase[tkinter.Tk],
+class ThreadBase[T: tkinter.Misc](
+    MiscBase[T],
     ABC,
 ):
 
-    def __init__(self):
-        super().__init__(tkinter.Tk())
+    def __init__(self, element: T, executor: ThreadPoolExecutor):
+        super().__init__(element)
+        self.executor = executor
+        self.sync_tasks = Queue[Callable[[], any]]()
+        self.closed = False
+        self.lock = threading.Lock()
+        self._sync_task_timer()
+
+    def execute(self, func: Callable[[...], any], *args):
+        self.executor.submit(self._task, func, *args)
+
+    def _task(self, func: Callable[[...], any], *args):
+        # noinspection PyBroadException
+        try:
+            func(*args)
+        except Exception:
+            traceback.format_exc()
+
+    def sync(self, func: Callable[[...], any] | Callable[[], any], *args):
+        self.sync_tasks.put(lambda: func(*args))
+
+    def _sync_task_timer(self):
+        while not self.sync_tasks.empty():
+            try:
+                self.sync_tasks.get(block=False)()
+            except Exception:
+                traceback.format_exc()
+        self.lock.acquire()
+        if not self.closed:
+            self.after(100, self._sync_task_timer)
+        self.lock.release()
+
+    @override
+    def destroy(self):
+        self.lock.acquire()
+        self.closed = True
+        self.lock.release()
+        while not self.sync_tasks.empty():
+            try:
+                self.sync_tasks.get(block=False)()
+            except Exception:
+                traceback.format_exc()
+        super().destroy()
+
+
+class TkBase(
+    ThreadBase[tkinter.Tk],
+    ABC,
+):
+
+    def __init__(self, executor: ThreadPoolExecutor):
+        super().__init__(tkinter.Tk(), executor)
         self.min_size(200, 50)
         self.protocol("WM_DELETE_WINDOW", self.on_close)
 

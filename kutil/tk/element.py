@@ -4,19 +4,16 @@ from concurrent.futures import ThreadPoolExecutor
 from tkinter import ttk
 from typing import override, Optional, Callable, Self
 
-from kutilpy.kutil.tk.base import MiscBase, PackBase, TkBase
+from kutilpy.kutil.tk.tk_base import MiscBase, PackBase, TkBase, ElementContainer
 
 
-class WindowBase[T: 'WindowBase'](
-    TkBase,
-    ABC,
-):
+class WindowBase[T: 'WindowBase'](TkBase, ABC, ):
     parent: Optional['WindowBase'] = None
     _force_focus: bool = False
 
     def __init__(self, executor: ThreadPoolExecutor):
         super().__init__(executor)
-        self.children = list['WindowBase']()
+        self.children = list[WindowBase]()
 
     def is_force_focus(self, force: bool):
         self._force_focus = force
@@ -51,40 +48,30 @@ class WindowBase[T: 'WindowBase'](
                 parent.children.remove(self)
         super().destroy()
 
-    def frame(self):
-        return Frame(self)
-
-    def button(self, text: str):
-        return Button(self, text)
-
-    def entry(self):
-        return Entry(self)
-
     def child_window(self, child: 'WindowBase'):
         self.children.append(child)
         child.parent = self
 
 
 class Frame(
+    ElementContainer[tkinter.Frame],
     PackBase[tkinter.Frame],
     MiscBase[tkinter.Frame],
 ):
-    def __init__(self, parent: WindowBase):
+    def __init__(self, parent: ElementContainer):
         super().__init__(ttk.Frame(parent.element))
+        self.parent = parent
+
+    @override
+    def window(self):
+        return self.parent.window()
 
 
-class Button(
-    PackBase[tkinter.Button],
-    MiscBase[tkinter.Button],
-):
+class Button(PackBase[tkinter.Button], MiscBase[tkinter.Button], ):
     _on_click: Callable[[], None] | None = None
 
-    def __init__(self, parent: WindowBase, text: str):
-        super().__init__(ttk.Button(
-            parent.element,
-            text=text,
-            command=lambda: self._on_click()
-        ))
+    def __init__(self, parent: ElementContainer, text: str):
+        super().__init__(ttk.Button(parent.element, text=text, command=lambda: self._on_click()))
         self.parent = parent
 
     def on_click(self, func: Callable[[], any]) -> Self:
@@ -92,19 +79,14 @@ class Button(
         return self
 
     def on_click_execute(self, func: Callable[[any], any], *args) -> Self:
-        self.on_click(lambda: self.parent.execute(func, *args))
+        self.on_click(lambda: self.parent.window.execute(func, *args))
         return self
 
 
-class Entry(
-    PackBase[tkinter.Entry],
-    MiscBase[tkinter.Entry],
-):
+class Entry(PackBase[tkinter.Entry], MiscBase[tkinter.Entry], ):
 
-    def __init__(self, parent: WindowBase):
-        super().__init__(ttk.Entry(
-            parent.element,
-        ))
+    def __init__(self, parent: ElementContainer):
+        super().__init__(ttk.Entry(parent.element, ))
         self.parent = parent
 
     def value(self):

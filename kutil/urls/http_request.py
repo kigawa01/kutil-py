@@ -1,3 +1,4 @@
+from abc import ABC
 from enum import Enum
 from typing import Self
 from urllib import request
@@ -8,6 +9,19 @@ from kutilpy.kutil.urls.url import URL
 ####################################################################################################
 class ContentType(Enum):
     JSON = "application/json"
+    GITHUB_JSON = "application/vnd.github+json"
+
+
+class AuthorizationValue(
+    ABC
+):
+    def __init__(self, value: str):
+        self.value = value
+
+
+class BearerAuthorization(AuthorizationValue):
+    def __init__(self, token: str):
+        super().__init__(f"Bearer {token}")
 
 
 # httpリクエストに関するもの
@@ -32,7 +46,15 @@ class HttpRequest:
         return self._url_request
 
     def accept(self, content_type: ContentType) -> Self:
-        self._url_request.add_header("Accept", content_type.value)
+        self.add_header("Accept", content_type.value)
+        return self
+
+    def authorization(self, value: AuthorizationValue) -> Self:
+        self.add_header("Authorization", value.value)
+        return self
+
+    def add_header(self, header: str, value: str) -> Self:
+        self._url_request.add_header(header, value)
         return self
 
     def set_method(self, method: str) -> Self:
@@ -40,10 +62,6 @@ class HttpRequest:
         return self
 
     def fetch(self):
-        """
-        :return:
-        :rtype: HttpResponse
-        """
         from kutilpy.kutil.urls.http_client import HttpClient
         return HttpClient.fetch(self)
 

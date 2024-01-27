@@ -1,5 +1,6 @@
 import dataclasses
 import json
+import typing
 from dataclasses import Field, fields
 from http import client
 from typing import Final, override, get_type_hints
@@ -44,7 +45,23 @@ class Json:
         return Json.dict_to_dataclass(self.json_value, clazz)
 
     @staticmethod
-    def dict_to_dataclass(src: dict, clazz):
+    def dict_to_dataclass[T](src: JsonType, clazz: type[T]) -> T:
+        generic_types = typing.get_args(clazz)
+        if clazz == any:
+            return clazz(src)
+
+        if clazz == list[*generic_types]:
+            result = list()
+            if len(generic_types) == 0:
+                element_type = any
+            else:
+                element_type = generic_types[0]
+            for item in src:
+                result.append(
+                    Json.dict_to_dataclass(item, element_type)
+                )
+            return result
+
         result = dict()
         field_dict: dict[str, Field] = {field.name: field for field in fields(clazz)}
         field_type_dict: dict[str, type] = get_type_hints(clazz)

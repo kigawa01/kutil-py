@@ -317,6 +317,8 @@ class ListValidatorParent(ValidatorParent[ValidatorInputType, ValidatorParentRet
         :param message: バリデーションエラーのメッセージ
         :return: 整数値のバリデーター
         """
+        validator().default("aaa").trim().integer().min(0).max(10)
+
         return DateValidator(self.iterate(validator().integer()), message)
 
 

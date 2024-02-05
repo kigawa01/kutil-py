@@ -1,3 +1,4 @@
+import os
 from typing import Final, TextIO, TypeVar
 
 from kutilpy.kutil.file.mode import WriteMode
@@ -32,6 +33,9 @@ class FileIO:
             mode = "r"
 
         return open(self.filename, mode)
+
+    def is_file(self):
+        return os.path.isfile(self.filename)
 
 
 class FileReader(FileIO):

@@ -1,9 +1,29 @@
+from abc import ABC
+from enum import Enum
+from typing import Self
 from urllib import request
 
 from kutilpy.kutil.urls.url import URL
 
 
 ####################################################################################################
+class ContentType(Enum):
+    JSON = "application/json"
+    GITHUB_JSON = "application/vnd.github+json"
+
+
+class AuthorizationValue(
+    ABC
+):
+    def __init__(self, value: str):
+        self.value = value
+
+
+class BearerAuthorization(AuthorizationValue):
+    def __init__(self, token: str):
+        super().__init__(f"Bearer {token}")
+
+
 # httpリクエストに関するもの
 class HttpRequest:
     """httpリクエストの情報を扱うクラス
@@ -24,3 +44,26 @@ class HttpRequest:
         """現在のリクエストを取得します
         """
         return self._url_request
+
+    def accept(self, content_type: ContentType) -> Self:
+        self.add_header("Accept", content_type.value)
+        return self
+
+    def authorization(self, value: AuthorizationValue) -> Self:
+        self.add_header("Authorization", value.value)
+        return self
+
+    def add_header(self, header: str, value: str) -> Self:
+        self._url_request.add_header(header, value)
+        return self
+
+    def set_method(self, method: str) -> Self:
+        self._url_request.method = method
+        return self
+
+    def fetch(self):
+        from kutilpy.kutil.urls.http_client import HttpClient
+        return HttpClient.fetch(self)
+
+    def __str__(self):
+        return f"HttpRequest: '{self._url_request.method} {self._url_request.full_url}'"
